@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
-import saveDetails from './SaveDetails';
+import { saveDetails } from './SaveDetails';
 import { Row, Col, Divider, Card } from 'antd';
 
 
@@ -43,7 +43,9 @@ function Details(props) {
             {roomDetails.map((details) => {
                 return <Col span={6} >
                     <div className="site-card-border-less-wrapper">
-                        <Card hoverable title={details.data.roomName} bordered={false} style={{ width: 300 }}>
+                        <Card hoverable title={details.data.roomName}
+                            onClick={() => { props.history.push(`/edit/${details.key}`) }}
+                            bordered={false} style={{ width: 300 }}>
                             <p>Created on : {details.data.createdDate}</p>
                             <p>Tenant Name : {details.data.name}</p>
                             <p>Occupation : {details.data.occupation}</p>
