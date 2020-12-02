@@ -4,19 +4,15 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 
-function Home(props) {
+function SiteLayout(props) {
 
 
-    function click(address) {
-        // localStorage.setItem("login", "loggedout");
-        props.history.push(address);
-    }
 
     return <div>
         <Layout className="layout">
             <Header>
                 <div className="logo" />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['home']}>
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[props.selectedKey]}>
                     <Menu.Item key="home"><span>Home</span><Link to="/home" /></Menu.Item>
                     <Menu.Item key="details" ><span>Details</span><Link to="/details" /></Menu.Item>
                     <Menu.Item key="bills" ><span>Bills</span><Link to="/bills" /></Menu.Item>
@@ -25,10 +21,10 @@ function Home(props) {
             <Content style={{ padding: '0 50px' }}>
                 {props.children}
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Project 1</Footer>
+            <Footer style={{ textAlign: 'center' }}>Project 2020</Footer>
         </Layout>
     </div>
 
 }
 
-export default withRouter(Home)
+export default withRouter(SiteLayout)

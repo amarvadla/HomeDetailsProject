@@ -2,16 +2,20 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import { Row, Col, Divider, Card } from 'antd';
+import database from '../Firebase/FirebaseInit';
 
 function Home(props) {
 
 
     function click(FlatCode) {
         props.history.push(`/view/${FlatCode}`);
+        // database.ref('/homedetails').push().set({
+        //     roomCode: FlatCode
+        // })
     }
 
     return <div>
-        <SiteLayout>
+        <SiteLayout selectedKey="home">
             <Divider orientation="left">HOME DETAILS</Divider>
 
             <Row gutter={[16, 16]}>

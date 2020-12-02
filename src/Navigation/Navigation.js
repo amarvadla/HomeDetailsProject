@@ -5,6 +5,7 @@ import Login from '../Login/Login';
 import AuthRoute from '../HOC/AuthHoc';
 import LoginRoute from '../HOC/LoginHoc';
 import FlatView from '../FlatView/FlatView';
+import Details from '../Details/Details';
 import {
     BrowserRouter as Router,
     Switch
@@ -22,6 +23,9 @@ function Navigation() {
                 </LoginRoute>
                 <AuthRoute path="/home">
                     <Home />
+                </AuthRoute>
+                <AuthRoute path="/details">
+                    <Details />
                 </AuthRoute>
                 <AuthRoute path="/view/:id">
                     <FlatView />

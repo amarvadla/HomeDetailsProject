@@ -30,10 +30,6 @@ function Login(props) {
         console.log('Failed:', errorInfo);
     };
 
-    function click() {
-        localStorage.setItem("login", "loggedin");
-        props.history.push('/home');
-    }
 
     return <div className="form-div">
         <Form
