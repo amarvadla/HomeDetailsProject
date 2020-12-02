@@ -7,6 +7,7 @@ import LoginRoute from '../HOC/LoginHoc';
 import FlatView from '../FlatView/FlatView';
 import Details from '../Details/Details';
 import EditView from '../EditView/EditView';
+import AddView from '../EditView/AddView';
 import {
     BrowserRouter as Router,
     Switch
@@ -33,6 +34,9 @@ function Navigation() {
                 </AuthRoute>
                 <AuthRoute path="/edit/:id">
                     <EditView />
+                </AuthRoute>
+                <AuthRoute path="/addRoom">
+                    <AddView />
                 </AuthRoute>
                 <AuthRoute exact path="/">
                     <Home />

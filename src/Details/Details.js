@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
-import { saveDetails } from './SaveDetails';
-import { Row, Col, Divider, Card } from 'antd';
+import { Row, Col, Divider, Card, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 
 function Details(props) {
@@ -26,16 +26,17 @@ function Details(props) {
     }, [])
 
     function click() {
-        let today = new Date();
-        var fecha = `${today.getDate()} - ${today.getMonth() + 1} - ${today.getFullYear()}`;
-        saveDetails({
-            roomCode: "g1b",
-            name: "amarnath vadla",
-            roomName: "Ground Floor - 1BHK",
-            createdDate: fecha,
-            occupation: "Employee at EX",
-            nativePlace: "India"
-        })
+        // let today = new Date();
+        // var fecha = `${today.getDate()} - ${today.getMonth() + 1} - ${today.getFullYear()}`;
+        // saveDetails({
+        //     roomCode: "g1b",
+        //     name: "amarnath vadla",
+        //     roomName: "Ground Floor - 1BHK",
+        //     createdDate: fecha,
+        //     occupation: "Employee at EX",
+        //     nativePlace: "India"
+        // })
+        props.history.push("/addRoom");
     }
 
     var roomDetailsView = <div>
@@ -60,11 +61,16 @@ function Details(props) {
         <div>
             <SiteLayout selectedKey="details">
                 <Divider orientation="left">Details</Divider>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , marginBottom : "50px"}}>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={click}>
+                        Add New Room
+                    </Button>
+                </div>
                 {roomDetails.length > 0 ? <div>
                     {roomDetailsView}
                 </div> : <div onClick={click}>
-                        empty
-            </div>}
+
+                    </div>}
             </SiteLayout>
         </div>
     )

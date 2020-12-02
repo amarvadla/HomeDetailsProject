@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, useParams } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import {
     Form,
@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import './FlatView.css'
 
-function FlatView(props) {
+function FlatView() {
 
     // const params = useParams()
 

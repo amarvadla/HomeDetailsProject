@@ -1,46 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter, useParams } from 'react-router-dom';
-import { editDetails, saveDetails } from '../Details/SaveDetails';
+import { withRouter } from 'react-router-dom';
+import {  saveDetails } from '../Details/SaveDetails';
 import SiteLayout from '../HOC/SiteLayout';
-import database from '../Firebase/FirebaseInit';
 import {
     Form,
     Input,
     Button,
 } from 'antd';
 
-function EditView(props) {
-
-    const params = useParams();
-    const [form] = Form.useForm();
-    const [flatData, setFlatData] = useState({});
-
-    useEffect(() => {
-
-        if (params.id) {
-            database.ref('homedetails/' + params.id).on('value', (snapshot) => {
-                const data = snapshot.val();
-                setFlatData(data);
-
-                form.setFieldsValue({
-                    "inputName": flatData.name,
-                    "inputRoomName": flatData.roomName,
-                    "inputOccupation": flatData.occupation,
-                    "inputNativePlace": flatData.nativePlace,
-                    "inputRoomCode": flatData.roomCode
-                });
-            });
-
-        }
-
-    }, [form, flatData.name])
+function AddView(props) {
 
     const onFinish = (values) => {
-        if (params.id)
-            editDetails(params.id, values);
-        else
-            saveDetails(values);
-
+        saveDetails(values);
         props.history.push('/details');
     };
 
@@ -51,17 +21,11 @@ function EditView(props) {
     return <SiteLayout>
         <div className="div-form">
             <Form
-                form={form}
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 14 }}
                 layout="horizontal"
                 initialValues={{
                     remember: true,
-                    "inputName": flatData ? flatData.name : "",
-                    "inputRoomName": flatData ? flatData.roomName : "",
-                    "inputOccupation": flatData ? flatData.occupation : "",
-                    "inputNativePlace": flatData ? flatData.nativePlace : "",
-                    "inputRoomCode": flatData ? flatData.roomCode : "F"
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -127,4 +91,4 @@ function EditView(props) {
 
 }
 
-export default withRouter(EditView);
+export default withRouter(AddView);

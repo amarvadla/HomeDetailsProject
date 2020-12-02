@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import { Row, Col, Divider, Card } from 'antd';
-import database from '../Firebase/FirebaseInit';
 
 function Home(props) {
 
