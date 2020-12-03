@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
-import { Row, Col, Divider, Card, Button } from 'antd';
+import { Row, Col, Divider, Card, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 
 function Details(props) {
 
     const [roomDetails, setRoomDetails] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
 
@@ -21,9 +22,10 @@ function Details(props) {
                 })
             });
             setRoomDetails(resultData);
+            setLoading(false);
         });
 
-    }, [])
+    }, [loading])
 
     function click() {
         // let today = new Date();
@@ -62,15 +64,16 @@ function Details(props) {
         <div>
             <SiteLayout selectedKey="details">
                 <Divider orientation="left">Details</Divider>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , marginBottom : "50px"}}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: "50px" }}>
                     <Button type="primary" icon={<PlusOutlined />} onClick={click}>
                         Add New Room
                     </Button>
                 </div>
                 {roomDetails.length > 0 ? <div>
                     {roomDetailsView}
-                </div> : <div onClick={click}>
-
+                </div> : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: "50px" }}>
+                        <Spin tip="Loading...">
+                        </Spin>
                     </div>}
             </SiteLayout>
         </div>
