@@ -8,11 +8,11 @@ import { PlusOutlined } from '@ant-design/icons';
 
 function Details(props) {
 
-    const [roomDetails, setRoomDetails] = useState([])
+    const [billDetails, setBillDetails] = useState([])
 
     useEffect(() => {
 
-        database.ref('homedetails').once('value', (snapshot) => {
+        database.ref('bills').once('value', (snapshot) => {
             var resultData = [];
             snapshot.forEach((childSnapshot) => {
                 resultData.push({
@@ -20,7 +20,8 @@ function Details(props) {
                     data: childSnapshot.val()
                 })
             });
-            setRoomDetails(resultData);
+            setBillDetails(resultData);
+            console.log(billDetails)
         });
 
     }, [])
@@ -36,22 +37,24 @@ function Details(props) {
         //     occupation: "Employee at EX",
         //     nativePlace: "India"
         // })
-        props.history.push("/addRoom");
+        props.history.push("/addBill");
     }
 
-    var roomDetailsView = <div>
+    var billDetailsView = <div>
         <Row gutter={[16, 16]}>
-            {roomDetails.map((details) => {
+            {billDetails.map((details) => {
                 return <Col span={6} >
                     <div className="site-card-border-less-wrapper">
-                        <Card hoverable title={details.data.roomName}
-                            onClick={() => { props.history.push(`/edit/${details.key}`) }}
+                        <Card hoverable title={`Tenant Id : ${details.data.id}`}
+                            onClick={() => { props.history.push(`/editBill/${details.key}`) }}
                             bordered={false} style={{ width: 300 }}>
-                            <p>Created on : {details.data.createdDate}</p>
-                            <p>Tenant Name : {details.data.name}</p>
-                            <p>Occupation : {details.data.occupation}</p>
-                            <p>Native place : {details.data.nativePlace}</p>
-                            <p>Tenant Id : {details.key}</p>
+                            <p>Created on : {details.data.date}</p>
+                            <p>Rent : {details.data.rent}</p>
+                            <p>Power : {details.data.power}</p>
+                            <p>Water : {details.data.water}</p>
+                            <p>Paid : {details.data.paid.toString()}</p>
+                            <p>Tenant Id : {details.data.id}</p>
+                            <p>Bill Id : {details.key}</p>
                         </Card>
                     </div></Col>
             })}
@@ -60,15 +63,15 @@ function Details(props) {
 
     return (
         <div>
-            <SiteLayout selectedKey="details">
-                <Divider orientation="left">Details</Divider>
+            <SiteLayout selectedKey="bills">
+                <Divider orientation="left">Bills</Divider>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , marginBottom : "50px"}}>
                     <Button type="primary" icon={<PlusOutlined />} onClick={click}>
-                        Add New Room
+                        Add New Bill
                     </Button>
                 </div>
-                {roomDetails.length > 0 ? <div>
-                    {roomDetailsView}
+                {billDetails.length > 0 ? <div>
+                    {billDetailsView}
                 </div> : <div onClick={click}>
 
                     </div>}
