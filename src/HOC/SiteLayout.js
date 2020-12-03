@@ -18,7 +18,7 @@ function SiteLayout(props) {
                     <Menu.Item key="bills" ><span>Bills</span><Link to="/bills" /></Menu.Item>
                 </Menu>
             </Header>
-            <Content style={{ padding: '0 50px' }}>
+            <Content style={{ padding: '0 50px', background: "#cccccc" , height : "100vh" }}>
                 {props.children}
             </Content>
             <Footer style={{ textAlign: 'center' }}>Project 2020</Footer>
