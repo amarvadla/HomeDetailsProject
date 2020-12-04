@@ -19,7 +19,7 @@ function EditBill(props) {
     const [form] = Form.useForm();
 
     useEffect(() => {
-
+        window.scrollTo(0, 0);
         if (params.id) {
             database.ref('bills/' + params.id).on('value', (snapshot) => {
                 const data = snapshot.val();

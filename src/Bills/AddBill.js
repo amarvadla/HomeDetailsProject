@@ -22,7 +22,6 @@ function FlatView(props) {
     const [form] = Form.useForm();
 
     useEffect(() => {
-
         database.ref('homedetails').once('value', (snapshot) => {
             var resultData = [];
             snapshot.forEach((childSnapshot) => {

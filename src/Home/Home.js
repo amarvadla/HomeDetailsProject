@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
-import { Row, Col, Divider, Card } from 'antd';
+import database from '../Firebase/FirebaseInit';
+import { List, message, Avatar, Spin, Divider, Carousel } from 'antd';
+import InfiniteScroll from 'react-infinite-scroller';
+import './Home.css';
 
 function Home(props) {
 
+
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [listLoading, setListLoading] = useState(false)
+    const [hasMore, sethasMore] = useState(true)
+
+    useEffect(() => {
+
+        database.ref('bills').once('value', (snapshot) => {
+            var resultData = [];
+            snapshot.forEach((childSnapshot) => {
+                database.ref('homedetails/' + childSnapshot.val().id).on('value', (snapshot) => {
+                    const homedetailsData = snapshot.val();
+                    resultData.push({
+                        key: childSnapshot.key,
+                        data: childSnapshot.val(),
+                        tenantName: homedetailsData.name,
+                        roomName: homedetailsData.roomName
+                    })
+                });
+            });
+            resultData.reverse();
+            setData(resultData);
+            setLoading(false);
+            console.log("useEffect")
+        });
+
+    }, [loading])
 
     function click(FlatCode) {
         props.history.push(`/view/${FlatCode}`);
@@ -13,69 +44,101 @@ function Home(props) {
         // })
     }
 
+    const handleInfiniteOnLoad = () => {
+        setListLoading(true);
+        return;
+        // if (data.length > 5) {
+        //     message.warning('Infinite List loaded all');
+        //     setLoading(false);
+        //     sethasMore(false);
+        //     return;
+        // }
+        database.ref('bills').once('value', (snapshot) => {
+            var resultData = [];
+            snapshot.forEach((childSnapshot) => {
+                database.ref('homedetails/' + childSnapshot.val().id).on('value', (snapshot) => {
+                    const homedetailsData = snapshot.val();
+                    resultData.push({
+                        key: childSnapshot.key,
+                        data: childSnapshot.val(),
+                        tenantName: homedetailsData.name,
+                        roomName: homedetailsData.roomName
+                    })
+                });
+            });
+            resultData = data.concat(resultData)
+            setData(resultData);
+            setListLoading(true);
+            sethasMore(false);
+            console.log("handleInfiniteOnLoad")
+        });
+    };
+
+    function onChange(a, b, c) {
+        console.log(a, b, c);
+    }
+
+    const contentStyle = {
+        height: '250px',
+        color: '#fff',
+        lineHeight: '160px',
+        textAlign: 'center',
+        background: '#364d79',
+    };
+
+
     return <div>
         <SiteLayout selectedKey="home">
-            <Divider orientation="left">HOME DETAILS</Divider>
 
-            <Row gutter={[16, 16]}>
-                <Col span={6} xs={{ order: 1 }} sm={{ order: 2 }} md={{ order: 3 }} lg={{ order: 4 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("g1b")}>
-                        <Card hoverable title="Ground Floor - 1BHK" bordered={false} style={{ width: 300 }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div></Col>
-                <Col span={6} xs={{ order: 2 }} sm={{ order: 1 }} md={{ order: 4 }} lg={{ order: 3 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("g1r")}>
-                        <Card hoverable title="Ground Floor - 1Room" bordered={false} style={{ width: 300 }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div></Col>
-                <Col span={6} xs={{ order: 3 }} sm={{ order: 4 }} md={{ order: 2 }} lg={{ order: 1 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("f2b")}>
-                        <Card hoverable title="First Floor - 2BHK" bordered={false} style={{ width: 300, background: "#fffgh" }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div></Col>
-                <Col span={6} xs={{ order: 4 }} sm={{ order: 3 }} md={{ order: 1 }} lg={{ order: 2 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("f1r")}>
-                        <Card hoverable title="First Floor - 1Room" bordered={false} style={{ width: 300 }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div> </Col>
-            </Row>
+            <Carousel style={{ marginTop: "25px" }} afterChange={onChange} autoplay>
+                <div>
+                    <h1 style={contentStyle}>Create Bills</h1>
+                </div>
+                <div>
+                    <h1 style={contentStyle}>Generate Home Data</h1>
+                </div>
+                <div>
+                    <h1 style={contentStyle}>Keep track of the bills</h1>
+                </div>
+                <div>
+                    <h1 style={contentStyle}>Track the payments</h1>
+                </div>
+            </Carousel>
 
-            <Row gutter={[16, 16]}>
-                <Col span={6} xs={{ order: 4 }} sm={{ order: 3 }} md={{ order: 1 }} lg={{ order: 2 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("s1b1")}>
-                        <Card hoverable title="Second Floor - 1BHK" bordered={false} style={{ width: 300 }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div> </Col>
-                <Col span={6} xs={{ order: 4 }} sm={{ order: 3 }} md={{ order: 1 }} lg={{ order: 2 }}>
-                    <div className="site-card-border-less-wrapper" onClick={() => click("s1b2")}>
-                        <Card hoverable title="Second Floor - 1BHK" bordered={false} style={{ width: 300 }}>
-                            <p>Generated on 01-12-2020</p>
-                            <p>Rent</p>
-                            <p>Power</p>
-                            <p>Water</p>
-                        </Card>
-                    </div> </Col>
-            </Row>
+            <Divider orientation="left">Recent Track</Divider>
+
+            <div className="demo-infinite-container">
+                <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={handleInfiniteOnLoad}
+                    hasMore={!listLoading && hasMore}
+                    useWindow={false}>
+
+                    <List
+                        dataSource={data}
+                        renderItem={item => (
+                            <List.Item key={item.key}>
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                    }
+                                    title={<a href="https://ant.design">{item.tenantName}</a>}
+                                    description={item.roomName}
+                                />
+                                <div> <p>Created on : {item.data.date}</p>
+                                    <p>Paid : {item.data.paid.toString()}</p>
+                                </div>
+                            </List.Item>
+                        )}>
+                        {loading && hasMore && (
+                            <div className="demo-loading-container">
+                                <Spin />
+                            </div>
+                        )}
+                    </List>
+                </InfiniteScroll>
+            </div>
         </SiteLayout>
     </div>
 

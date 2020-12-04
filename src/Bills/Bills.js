@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
 import { Row, Col, Divider, Card, Button, Spin } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 
 
 function Bills(props) {
@@ -63,6 +63,7 @@ function Bills(props) {
                             <p>Paid : {details.data.paid.toString()}</p>
                             <p>Tenant Id : {details.data.id}</p>
                             <p>Bill Id : {details.key}</p>
+                            {details.data.paid ? <CheckCircleTwoTone style={{ float: "right" }} /> : <div style={{ height: "15px" }} />}
                         </Card>
                     </div></Col>
             })}
