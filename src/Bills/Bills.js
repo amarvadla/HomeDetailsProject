@@ -80,7 +80,7 @@ function Bills(props) {
                 </div>
                 {billDetails && billDetails.length > 0 ? <div>
                     {billDetailsView}
-                </div> : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: "50px" }}>
+                </div> : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: "50px", height: "50%" }}>
                         <Spin tip="Loading...">
                         </Spin>
                     </div>}

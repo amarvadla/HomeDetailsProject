@@ -6,6 +6,10 @@ const { Header, Content, Footer } = Layout;
 
 function SiteLayout(props) {
 
+    const logOutClick = () => {
+        localStorage.setItem("login", "loggedout");
+        props.history.push("/login");
+    }
 
 
     return <div>
@@ -16,12 +20,15 @@ function SiteLayout(props) {
                     <Menu.Item key="home"><span>Home</span><Link to="/home" /></Menu.Item>
                     <Menu.Item key="details" ><span>Details</span><Link to="/details" /></Menu.Item>
                     <Menu.Item key="bills" ><span>Bills</span><Link to="/bills" /></Menu.Item>
+                    <Menu.Item key="logout" style={{ float: "right" }} onClick={logOutClick}><span>Logout</span></Menu.Item>
                 </Menu>
             </Header>
-            <Content style={{ padding: '0 50px', background: "#cccccc" , height : "100vh" }}>
+            <Content style={{ padding: '0 50px', background: "#e6e6ff", height: "100vh" }}>
                 {props.children}
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Project 2020</Footer>
+            <Footer style={{ textAlign: 'center', background: "#000033", color: "#fff" }}><div style={{ color: "#fff" }}>
+                Home Bill ©2020 Created by Amarnath Vadla <br /> All rights reserved
+                </div></Footer>
         </Layout>
     </div>
 

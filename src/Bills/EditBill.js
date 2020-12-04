@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import {
     Form,
-    Input,
     Button,
-    DatePicker,
     InputNumber,
     Switch,
     Select,
@@ -14,43 +12,46 @@ import database from '../Firebase/FirebaseInit';
 const { Option } = Select;
 // import './FlatView.css'
 
-function FlatView(props) {
+function EditBill(props) {
 
-    // const params = useParams()
-
-    const [roomDetails, setRoomDetails] = useState([])
+    const params = useParams()
+    const [billDetails, setBillDetails] = useState([])
     const [form] = Form.useForm();
 
     useEffect(() => {
 
-        database.ref('homedetails').once('value', (snapshot) => {
-            var resultData = [];
-            snapshot.forEach((childSnapshot) => {
-                resultData.push({
-                    key: childSnapshot.key,
-                    data: childSnapshot.val()
-                })
-            });
-            setRoomDetails(resultData);
-            console.log(roomDetails)
-        });
+        if (params.id) {
+            database.ref('bills/' + params.id).on('value', (snapshot) => {
+                const data = snapshot.val();
+                setBillDetails(data);
+                console.log(data)
 
-    }, [form])
+                form.setFieldsValue({
+                    "rent": billDetails.rent,
+                    "power": billDetails.power,
+                    "water": billDetails.water,
+                    "paid": billDetails.paid
+                });
+            });
+
+        }
+
+    }, [form, billDetails.rent])
 
     const onFinish = (values) => {
         console.log('Success:', values);
 
-        let today = new Date(values.date);
+        let today = new Date();
         var fecha = `${today.getDate()} - ${today.getMonth() + 1} - ${today.getFullYear()}`;
         let changeData = {
-            id: values.tenantId,
+            id: billDetails.id,
             date: fecha,
             rent: values.rent,
             power: values.power,
             water: values.water,
             paid: values.paid
         }
-        var result = database.ref('bills').push().set(changeData);
+        var result = database.ref('bills/' + params.id).update(changeData);
         props.history.push("/bills");
     };
 
@@ -72,26 +73,6 @@ function FlatView(props) {
                 onFinishFailed={onFinishFailed}
                 size={"default"}>
 
-                <Form.Item label="Name of the tenant" name="tenantId" rules={[
-                    {
-                        required: true,
-                        message: 'Please input your name!',
-                    },
-                ]}>
-                    <Select placeholder="Select a tenant">
-                        {roomDetails.map((details) => {
-                            return <Option value={details.key}>{details.data.name}</Option>
-                        })}
-                    </Select>
-                </Form.Item>
-                <Form.Item label="Date submitted" name="date" rules={[
-                    {
-                        required: true,
-                        message: 'Please input date!',
-                    },
-                ]}>
-                    <DatePicker />
-                </Form.Item>
                 <Form.Item label="Rent bill" name="rent" rules={[
                     {
                         required: true,
@@ -106,9 +87,7 @@ function FlatView(props) {
                 <Form.Item label="Water bill" name="water">
                     <InputNumber />
                 </Form.Item>
-                <Form.Item label="Paid" name="paid" initialValue={false}>
-                    <Switch />
-                </Form.Item>
+                <Form.Item label="Paid" name="paid" valuePropName="checked"><Switch /></Form.Item>
                 <Form.Item label="Button">
                     <Button type="primary" htmlType="submit">
                         Submit</Button>
@@ -119,4 +98,4 @@ function FlatView(props) {
 
 }
 
-export default withRouter(FlatView);
+export default withRouter(EditBill);
