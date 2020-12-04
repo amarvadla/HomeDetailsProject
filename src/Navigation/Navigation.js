@@ -10,6 +10,7 @@ import EditView from '../EditView/EditView';
 import AddView from '../EditView/AddView';
 import Bills from '../Bills/Bills';
 import AddBill from '../Bills/AddBill';
+import EditBill from '../Bills/EditBill';
 import {
     BrowserRouter as Router,
     Switch
@@ -35,6 +36,9 @@ function Navigation() {
             </AuthRoute>
             <AuthRoute path="/edit/:id">
                 <EditView />
+            </AuthRoute>
+            <AuthRoute path="/editBill/:id">
+                <EditBill />
             </AuthRoute>
             <AuthRoute path="/addRoom">
                 <AddView />
