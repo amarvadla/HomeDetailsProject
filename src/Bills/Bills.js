@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
 import { Row, Col, Divider, Card, Button, Spin } from 'antd';
-import { PlusOutlined, CheckCircleTwoTone } from '@ant-design/icons';
+import { PlusOutlined, CheckCircleTwoTone, DeleteFilled } from '@ant-design/icons';
 
 
 function Bills(props) {
@@ -34,17 +34,13 @@ function Bills(props) {
     }, [loading])
 
     function click() {
-        // let today = new Date();
-        // var fecha = `${today.getDate()} - ${today.getMonth() + 1} - ${today.getFullYear()}`;
-        // saveDetails({
-        //     roomCode: "g1b",
-        //     name: "amarnath vadla",
-        //     roomName: "Ground Floor - 1BHK",
-        //     createdDate: fecha,
-        //     occupation: "Employee at EX",
-        //     nativePlace: "India"
-        // })
         props.history.push("/addBill");
+    }
+
+    function clickDelete(key) {
+        console.log(key);
+        database.ref('bills/' + key).remove();
+        setLoading(true);
     }
 
     var billDetailsView = <div>
@@ -63,7 +59,10 @@ function Bills(props) {
                             <p>Paid : {details.data.paid.toString()}</p>
                             <p>Tenant Id : {details.data.id}</p>
                             <p>Bill Id : {details.key}</p>
-                            {details.data.paid ? <CheckCircleTwoTone style={{ float: "right" }} /> : <div style={{ height: "15px" }} />}
+                            <Button icon={<DeleteFilled />} onClick={(e) => { e.stopPropagation(); clickDelete(details.key) }}>
+                            </Button>
+                            {/* <DeleteFilled /> */}
+                            {details.data.paid ? <CheckCircleTwoTone style={{ float: "right", padding: "10px" }} /> : null}
                         </Card>
                     </div></Col>
             })}

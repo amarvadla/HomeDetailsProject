@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
 import { Row, Col, Divider, Card, Button, Spin } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteFilled } from '@ant-design/icons';
 
 
 function Details(props) {
@@ -41,6 +41,12 @@ function Details(props) {
         props.history.push("/addRoom");
     }
 
+    function clickDelete(key) {
+        console.log(key);
+        database.ref('homedetails/' + key).remove();
+        setLoading(true);
+    }
+
     var roomDetailsView = <div>
         <Row gutter={[16, 16]}>
             {roomDetails.map((details) => {
@@ -54,6 +60,8 @@ function Details(props) {
                             <p>Occupation : {details.data.occupation}</p>
                             <p>Native place : {details.data.nativePlace}</p>
                             <p>Tenant Id : {details.key}</p>
+                            <Button icon={<DeleteFilled />} onClick={(e) => { e.stopPropagation(); clickDelete(details.key) }}>
+                            </Button>
                         </Card>
                     </div></Col>
             })}
