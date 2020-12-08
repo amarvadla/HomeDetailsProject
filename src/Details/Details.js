@@ -65,7 +65,7 @@ function Details(props) {
                             </Button>
                         </Card> */}
 
-                        <div className="card-view">
+                        <div className="card-view" onClick={() => { props.history.push(`/edit/${details.key}`) }}>
                             <h2 className="card-heading">{details.data.roomName}</h2>
                             <div className="card-line"></div>
                             <div className="card-elem">
