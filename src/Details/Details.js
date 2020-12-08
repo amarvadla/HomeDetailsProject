@@ -4,6 +4,7 @@ import SiteLayout from '../HOC/SiteLayout';
 import database from '../Firebase/FirebaseInit';
 import { Row, Col, Divider, Card, Button, Spin } from 'antd';
 import { PlusOutlined, DeleteFilled } from '@ant-design/icons';
+import './details.scss';
 
 
 function Details(props) {
@@ -52,7 +53,7 @@ function Details(props) {
             {roomDetails.map((details) => {
                 return <Col span={6} >
                     <div className="site-card-border-less-wrapper">
-                        <Card hoverable title={details.data.roomName}
+                        {/* <Card hoverable title={details.data.roomName}
                             onClick={() => { props.history.push(`/edit/${details.key}`) }}
                             bordered={false} style={{ width: 300 }}>
                             <p>Created on : {details.data.createdDate}</p>
@@ -62,7 +63,22 @@ function Details(props) {
                             <p>Tenant Id : {details.key}</p>
                             <Button icon={<DeleteFilled />} onClick={(e) => { e.stopPropagation(); clickDelete(details.key) }}>
                             </Button>
-                        </Card>
+                        </Card> */}
+
+                        <div className="card-view">
+                            <h2 className="card-heading">{details.data.roomName}</h2>
+                            <div className="card-line"></div>
+                            <div className="card-elem">
+                                <p>Created on : {details.data.createdDate}</p>
+                                <p>Tenant Name : {details.data.name}</p>
+                                <p>Occupation : {details.data.occupation}</p>
+                                <p>Native place : {details.data.nativePlace}</p>
+                                <p>Tenant Id : {details.key}</p>
+                                <Button icon={<DeleteFilled />} onClick={(e) => { e.stopPropagation(); clickDelete(details.key) }}>
+                                </Button>
+                            </div>
+                        </div>
+
                     </div></Col>
             })}
         </Row>

@@ -5,6 +5,7 @@ import database from '../Firebase/FirebaseInit';
 import { List, message, Avatar, Spin, Divider, Carousel } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import './Home.css';
+import Home1 from './Home1';
 
 function Home(props) {
 
@@ -89,6 +90,8 @@ function Home(props) {
 
     return <div>
         <SiteLayout selectedKey="home">
+
+            {/* <Home1 click={click} /> */}
 
             <Carousel style={{ marginTop: "25px" }} afterChange={onChange} autoplay>
                 <div>
